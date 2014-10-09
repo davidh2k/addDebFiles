@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -e
+
+debFile="$1"
+repo="$2"
+omvDir="/home/omv/"
+addScript="omvAddDeb.sh"
+
+moveDeb () {
+	mv "$debFile" "$omvDir"
+}
+
+chownDeb () {
+	chown omv:omv "$omvDir""$debFile"
+}
+
+createAddScript () {
+	echo "cd /home/omv/reprepro/debian && reprepro includedeb $repo $omvDir$debFile" > "$home""$addScript"
+	chmod +x "$omvDir""$addScript"
+}
+
+
+addDeb () {
+	su omv -c '/home/omv/omvAddDeb.sh'
+}
+
+moveDeb
+chownDeb
+createAddScript
+addDeb
+
+exit 0
